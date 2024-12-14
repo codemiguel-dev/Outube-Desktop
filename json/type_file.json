@@ -1,0 +1,85 @@
+{
+    "formats": [
+      {
+        "extension": ".mp3",
+        "type": "audio",
+        "description": "MP3 audio file"
+      },
+      {
+        "extension": ".wav",
+        "type": "audio",
+        "description": "WAV audio file"
+      },
+      {
+        "extension": ".flac",
+        "type": "audio",
+        "description": "FLAC audio file"
+      },
+      {
+        "extension": ".mp4",
+        "type": "video",
+        "description": "MP4 video file"
+      },
+      {
+        "extension": ".avi",
+        "type": "video",
+        "description": "AVI video file"
+      },
+      {
+        "extension": ".mkv",
+        "type": "video",
+        "description": "MKV video file"
+      },
+      {
+        "extension": ".jpg",
+        "type": "image",
+        "description": "JPEG image file"
+      },
+      {
+        "extension": ".png",
+        "type": "image",
+        "description": "PNG image file"
+      },
+      {
+        "extension": ".gif",
+        "type": "image",
+        "description": "GIF image file"
+      },
+      {
+        "extension": ".pdf",
+        "type": "document",
+        "description": "PDF document"
+      },
+      {
+        "extension": ".txt",
+        "type": "document",
+        "description": "Text document"
+      },
+      {
+        "extension": ".docx",
+        "type": "document",
+        "description": "Microsoft Word document"
+      },
+      {
+        "extension": ".xlsx",
+        "type": "document",
+        "description": "Microsoft Excel spreadsheet"
+      },
+      {
+        "extension": ".html",
+        "type": "web",
+        "description": "HTML web page"
+      },
+      {
+        "extension": ".css",
+        "type": "web",
+        "description": "CSS style sheet"
+      },
+      {
+        "extension": ".js",
+        "type": "web",
+        "description": "JavaScript file"
+      }
+    ]
+  }
+  

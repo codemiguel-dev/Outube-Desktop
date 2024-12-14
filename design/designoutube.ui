@@ -376,7 +376,7 @@ border: 2px solid rgb(120, 0, 171);
                   <string notr="true">font-size: 30px</string>
                  </property>
                  <property name="text">
-                  <string>Descargar mp3 en yoputube</string>
+                  <string>Descargar en youtube</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -385,6 +385,16 @@ border: 2px solid rgb(120, 0, 171);
                </item>
                <item>
                 <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Elegir formato</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboboxtype"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label">
                  <property name="text">
                   <string>URL del video</string>
                  </property>

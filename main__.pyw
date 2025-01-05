@@ -38,7 +38,7 @@ class Outube(QMainWindow):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         icon_user = QIcon("img/user.svg")
         self.urltxt.addAction(icon_user, QLineEdit.LeadingPosition)
-        self.btn_downloads.clicked.connect(self.descargar_mp3)
+        self.btn_downloads.clicked.connect(self.descargar)
         self.gripSize = 10
         self.grip = QSizeGrip(self)
         self.grip.resize(self.gripSize, self.gripSize)
@@ -49,7 +49,9 @@ class Outube(QMainWindow):
         self.bt_close.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_select_folder.clicked.connect(self.select_download_folder)
 
-    def json_job(self):
+        self.json_type_file()
+
+    def json_type_file(self):
         try:
             # Abre el archivo JSON
             with open("json/type_file.json", "r", encoding="utf-8") as archivo_json:
@@ -86,8 +88,12 @@ class Outube(QMainWindow):
                 f"Carpeta seleccionada: {self.download_folder}"
             )
 
-    def descargar_mp3(self):
+    def descargar(self):
         url = self.urltxt.text()
+        file_type = (
+            self.comboboxtype.currentText()
+        )  # Obtiene el tipo de archivo seleccionado
+
         if not self.download_folder:
             self.download_status.setText(
                 "Por favor, selecciona una carpeta de descarga primero."
@@ -95,32 +101,58 @@ class Outube(QMainWindow):
             return
 
         try:
-            ydl_opts = {
-                "format": "bestaudio/best",
-                "outtmpl": f"{self.download_folder}/%(title)s.%(ext)s",  # Ruta de descarga usando la carpeta seleccionada
-                "postprocessors": [
-                    {
-                        "key": "FFmpegExtractAudio",
-                        "preferredcodec": "mp3",
-                        "preferredquality": "192",
-                    }
-                ],
-            }
+            # Definir las opciones de descarga según el tipo de archivo seleccionado
+            if file_type == "mp3":
+                ydl_opts = {
+                    "format": "bestaudio/best",  # Elegir el mejor audio
+                    "outtmpl": f"{self.download_folder}/%(title)s.%(ext)s",  # Ruta de descarga
+                    "postprocessors": [
+                        {
+                            "key": "FFmpegExtractAudio",  # Convertir el audio a mp3
+                            "preferredcodec": "mp3",  # Formato de salida
+                            "preferredquality": "192",  # Calidad del audio
+                        }
+                    ],
+                }
+            elif file_type in [
+                "mp4",
+                "webm",
+                "mkv",
+            ]:  # Agregar más tipos si es necesario
+                ydl_opts = {
+                    "format": "bestvideo+bestaudio/best",  # Mejor calidad de video y audio
+                    "outtmpl": f"{self.download_folder}/%(title)s.%(ext)s",  # Ruta de descarga
+                    "postprocessors": [
+                        {
+                            "key": "FFmpegVideoConvertor",  # Convertir el video
+                            "preferredcodec": file_type,  # Tipo de archivo seleccionado
+                            "preferredquality": "1080",  # Calidad del video
+                        }
+                    ],
+                }
+            else:
+                raise ValueError(
+                    "Tipo de archivo no soportado."
+                )  # Lanzar un error si el tipo de archivo no es reconocido
+
             start_time = time.time()  # Marca el inicio de la descarga
             self.download_status.setText("Descarga en progreso...")
+
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info_dict = ydl.extract_info(url, download=True)
-                mp3_filename = (
-                    ydl.prepare_filename(info_dict).rsplit(".", 1)[0] + ".mp3"
-                )
+                file_filename = ydl.prepare_filename(info_dict)
+                if file_type == "mp3":
+                    file_filename = file_filename.rsplit(".", 1)[0] + f".{file_type}"
                 self.download_status.setText(
-                    f"El archivo MP3 se ha descargado: {mp3_filename}"
+                    f"El archivo {file_type.upper()} se ha descargado: {file_filename}"
                 )
+
             end_time = time.time()  # Marca el final de la descarga
             download_time = end_time - start_time  # Calcula el tiempo total de descarga
             self.download_time.setText(
                 f"Tiempo de descarga: {download_time:.2f} segundos"
             )
+
         except Exception as e:
             self.download_status.setText(f"Error al descargar el archivo: {e}")
 

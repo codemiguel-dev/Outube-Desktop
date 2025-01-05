@@ -56,7 +56,7 @@
         "description": "Text document"
       },
       {
-        "extension": "}docx",
+        "extension": "docx",
         "type": "document",
         "description": "Microsoft Word document"
       },
